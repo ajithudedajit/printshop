@@ -487,7 +487,221 @@ html:not(.dark) .toast { background: white; border-color: rgba(0,0,0,0.1); color
     <!-- Filled dynamically -->
   </div>
 </div>
+  <script>
 
-<script type="module" src="/app.js"></script>
+// ================= GLOBAL =================
+let deferredPrompt = null;
+
+
+// ================= INIT =================
+window.onload = () => {
+  showAuth();
+  loadPolls();
+  updateNotificationBadge(1);
+};
+
+
+// ================= PAGE SYSTEM =================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+  const target = document.getElementById(`page-${page}`);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const activeNav = document.querySelector(`[data-page="${page}"]`);
+  if (activeNav) activeNav.classList.add('active');
+}
+
+
+// ================= AUTH =================
+function showApp() {
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('appScreen').classList.remove('hidden');
+  showPage('home');
+}
+
+function showAuth() {
+  document.getElementById('appScreen').classList.add('hidden');
+  document.getElementById('authScreen').classList.remove('hidden');
+}
+
+
+// ================= LOGIN =================
+function handleLogin(e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if (email && password) {
+    showToast("Login successful ✅");
+
+    setTimeout(() => {
+      showApp();
+
+      // UI updates
+      const name = email.split("@")[0];
+      document.getElementById("greetName").innerText = name;
+      document.getElementById("userAvatar").innerText = name[0].toUpperCase();
+      document.getElementById("roleTag").innerText = "Student";
+
+    }, 500);
+
+  } else {
+    showToast("Login failed ❌");
+  }
+}
+
+
+// ================= SIGNUP =================
+function handleSignup(e) {
+  e.preventDefault();
+  showToast("Account created 🎉");
+  switchAuthTab('login');
+}
+
+
+// ================= LOGOUT =================
+function logout() {
+  showToast("Logged out");
+  showAuth();
+}
+
+
+// ================= AUTH TAB =================
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById("loginForm");
+  const signupForm = document.getElementById("signupForm");
+
+  const loginTab = document.getElementById("loginTab");
+  const signupTab = document.getElementById("signupTab");
+
+  if (tab === "login") {
+    loginForm.classList.remove("hidden");
+    signupForm.classList.add("hidden");
+
+    loginTab.style.background = "linear-gradient(135deg,#6366f1,#4f46e5)";
+    loginTab.style.color = "white";
+
+    signupTab.style.background = "transparent";
+    signupTab.style.color = "#94a3b8";
+
+  } else {
+    signupForm.classList.remove("hidden");
+    loginForm.classList.add("hidden");
+
+    signupTab.style.background = "linear-gradient(135deg,#6366f1,#4f46e5)";
+    signupTab.style.color = "white";
+
+    loginTab.style.background = "transparent";
+    loginTab.style.color = "#94a3b8";
+  }
+}
+
+
+// ================= PASSWORD =================
+function togglePwd(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === "password") {
+    input.type = "text";
+    btn.innerText = "🙈";
+  } else {
+    input.type = "password";
+    btn.innerText = "👁";
+  }
+}
+
+
+// ================= DARK MODE =================
+function toggleDark() {
+  document.documentElement.classList.toggle("dark");
+}
+
+
+// ================= TOAST =================
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  const text = document.getElementById("toastMsg");
+
+  if (!toast || !text) return;
+
+  text.innerText = msg;
+  toast.classList.add("show");
+
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+
+// ================= GOOGLE LOGIN =================
+function handleGoogleLogin() {
+  showToast("Google login coming soon 🚀");
+}
+
+
+// ================= PWA INSTALL =================
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.classList.remove('hidden');
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+    });
+  }
+}
+
+function dismissInstall() {
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.classList.add('hidden');
+}
+
+
+// ================= POLLS =================
+function loadPolls() {
+  const container = document.getElementById("pollsList");
+  const pageContainer = document.getElementById("pollsPageList");
+
+  const dummy = `
+    <div class="card p-4">
+      <h4 class="font-bold">Print Notes?</h4>
+      <p class="text-sm text-slate-400">Bulk print decision</p>
+    </div>
+  `;
+
+  if (container) container.innerHTML = dummy;
+  if (pageContainer) pageContainer.innerHTML = dummy;
+}
+
+
+// ================= CREATE POLL =================
+function handleCreatePoll(e) {
+  e.preventDefault();
+  showToast("Poll created ✅");
+  showPage('home');
+}
+
+
+// ================= NOTIFICATIONS =================
+function updateNotificationBadge(count = 0) {
+  const badge = document.getElementById("notifBadge");
+
+  if (!badge) return;
+
+  if (count > 0) {
+    badge.classList.remove("hidden");
+    badge.innerText = count;
+  } else {
+    badge.classList.add("hidden");
+  }
+}
+
+</script>
 </body>
 </html>
