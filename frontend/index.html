@@ -486,138 +486,11 @@ html:not(.dark) .toast { background: white; border-color: rgba(0,0,0,0.1); color
   <div class="modal-sheet" id="reviewModalContent">
     <!-- Filled dynamically -->
   </div>
-</div>
+
+  
+  <script type="module" src="/app.js"></script>
+
   <script>
-
-// ================= GLOBAL =================
-let deferredPrompt = null;
-
-
-// ================= INIT =================
-window.onload = () => {
-  showAuth();
-  loadPolls();
-  updateNotificationBadge(1);
-};
-
-
-// ================= PAGE SYSTEM =================
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
-  const target = document.getElementById(`page-${page}`);
-  if (target) target.classList.add('active');
-
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const activeNav = document.querySelector(`[data-page="${page}"]`);
-  if (activeNav) activeNav.classList.add('active');
-}
-
-
-// ================= AUTH =================
-function showApp() {
-  document.getElementById('authScreen').classList.add('hidden');
-  document.getElementById('appScreen').classList.remove('hidden');
-  showPage('home');
-}
-
-function showAuth() {
-  document.getElementById('appScreen').classList.add('hidden');
-  document.getElementById('authScreen').classList.remove('hidden');
-}
-
-
-// ================= LOGIN =================
-function handleLogin(e) {
-  e.preventDefault();
-
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
-
-  if (email && password) {
-    showToast("Login successful ✅");
-
-    setTimeout(() => {
-      showApp();
-
-      // UI updates
-      const name = email.split("@")[0];
-      document.getElementById("greetName").innerText = name;
-      document.getElementById("userAvatar").innerText = name[0].toUpperCase();
-      document.getElementById("roleTag").innerText = "Student";
-
-    }, 500);
-
-  } else {
-    showToast("Login failed ❌");
-  }
-}
-
-
-// ================= SIGNUP =================
-function handleSignup(e) {
-  e.preventDefault();
-  showToast("Account created 🎉");
-  switchAuthTab('login');
-}
-
-
-// ================= LOGOUT =================
-function logout() {
-  showToast("Logged out");
-  showAuth();
-}
-
-
-// ================= AUTH TAB =================
-function switchAuthTab(tab) {
-  const loginForm = document.getElementById("loginForm");
-  const signupForm = document.getElementById("signupForm");
-
-  const loginTab = document.getElementById("loginTab");
-  const signupTab = document.getElementById("signupTab");
-
-  if (tab === "login") {
-    loginForm.classList.remove("hidden");
-    signupForm.classList.add("hidden");
-
-    loginTab.style.background = "linear-gradient(135deg,#6366f1,#4f46e5)";
-    loginTab.style.color = "white";
-
-    signupTab.style.background = "transparent";
-    signupTab.style.color = "#94a3b8";
-
-  } else {
-    signupForm.classList.remove("hidden");
-    loginForm.classList.add("hidden");
-
-    signupTab.style.background = "linear-gradient(135deg,#6366f1,#4f46e5)";
-    signupTab.style.color = "white";
-
-    loginTab.style.background = "transparent";
-    loginTab.style.color = "#94a3b8";
-  }
-}
-
-
-// ================= PASSWORD =================
-function togglePwd(id, btn) {
-  const input = document.getElementById(id);
-  if (input.type === "password") {
-    input.type = "text";
-    btn.innerText = "🙈";
-  } else {
-    input.type = "password";
-    btn.innerText = "👁";
-  }
-}
-
-
-// ================= DARK MODE =================
-function toggleDark() {
-  document.documentElement.classList.toggle("dark");
-}
-
 
 // ================= TOAST =================
 function showToast(msg) {
@@ -640,6 +513,8 @@ function handleGoogleLogin() {
 
 
 // ================= PWA INSTALL =================
+let deferredPrompt = null;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -683,8 +558,13 @@ function loadPolls() {
 // ================= CREATE POLL =================
 function handleCreatePoll(e) {
   e.preventDefault();
+
   showToast("Poll created ✅");
-  showPage('home');
+
+  // call only if your app.js has showPage
+  if (typeof showPage === "function") {
+    showPage('home');
+  }
 }
 
 
@@ -702,6 +582,7 @@ function updateNotificationBadge(count = 0) {
   }
 }
 
-</script>
+  </script>
+</div>
 </body>
 </html>
