@@ -176,17 +176,11 @@ async function handleSignup(e) {
   }
 }
 
-// Google Login (simulated with demo modal)
 async function handleGoogleLogin() {
   try {
-    console.log("Google login clicked"); // 🔍 debug
-
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    console.log("User:", user);
-
-    // Send to backend
     const res = await fetch('/api/google-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -199,21 +193,16 @@ async function handleGoogleLogin() {
     });
 
     const data = await res.json();
-
     if (!res.ok) throw new Error(data.error);
 
     currentUser = data.user;
     onLogin();
-
-    alert("Welcome " + user.displayName);
+    toast(`Welcome, ${currentUser.name}! 👋`, 'success');
 
   } catch (error) {
-    console.error("Google Error:", error);
-    alert("Error: " + error.message);
+    toast(error.message || 'Google login failed', 'error');
   }
 }
-
-window.handleGoogleLogin = handleGoogleLogin;
 
 async function handleLogout() {
   try {
@@ -1118,3 +1107,37 @@ setInterval(() => {
     }
   });
 }, 60 * 1000);
+
+// ============================================================
+// WINDOW EXPORTS — required because this is an ES module;
+// all functions called from HTML onclick= must be on window
+// ============================================================
+window.handleGoogleLogin    = handleGoogleLogin;
+window.handleLogin          = handleLogin;
+window.handleSignup         = handleSignup;
+window.handleLogout         = handleLogout;
+window.switchAuthTab        = switchAuthTab;
+window.togglePwd            = togglePwd;
+window.toggleDark           = toggleDark;
+window.showPage             = showPage;
+window.installApp           = installApp;
+window.dismissInstall       = dismissInstall;
+window.loadPolls            = loadPolls;
+window.openPollModal        = openPollModal;
+window.closePollModal       = closePollModal;
+window.joinPoll             = joinPoll;
+window.openPaymentModal     = openPaymentModal;
+window.closePaymentModal    = closePaymentModal;
+window.previewScreenshot    = previewScreenshot;
+window.submitPayment        = submitPayment;
+window.setDuration          = setDuration;
+window.previewQR            = previewQR;
+window.handleCreatePoll     = handleCreatePoll;
+window.loadDashboard        = loadDashboard;
+window.filterPayments       = filterPayments;
+window.reviewPayment        = reviewPayment;
+window.openReviewModal      = openReviewModal;
+window.closeReviewModal     = closeReviewModal;
+window.openPaymentsForPoll  = openPaymentsForPoll;
+window.closePoll            = closePoll;
+window.viewReport           = viewReport;
