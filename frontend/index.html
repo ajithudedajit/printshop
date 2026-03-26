@@ -658,6 +658,97 @@ function handleLogout() {
   document.getElementById('appScreen').classList.add('hidden');
   document.getElementById('authScreen').classList.remove('hidden');
 }
+    // ================= GLOBAL UI FIX =================
+
+// HOME STATS
+function loadHomeStats() {
+  const stats = document.getElementById("homeStats");
+  if (!stats) return;
+
+  stats.innerHTML = `
+    <div class="card p-4">
+      <p class="text-xl font-bold text-indigo-400">₹120</p>
+      <p class="text-sm text-slate-400">Total Revenue</p>
+    </div>
+    <div class="card p-4">
+      <p class="text-xl font-bold text-red-400">2</p>
+      <p class="text-sm text-slate-400">Suspicious</p>
+    </div>
+  `;
+}
+
+
+// DASHBOARD
+function loadDashboard() {
+  const stats = document.getElementById("dashStats");
+  if (!stats) return;
+
+  stats.innerHTML = `
+    <div class="card p-4">
+      <p class="font-bold text-lg">₹500</p>
+      <p class="text-sm text-slate-400">Revenue</p>
+    </div>
+    <div class="card p-4">
+      <p class="font-bold text-lg">12</p>
+      <p class="text-sm text-slate-400">Orders</p>
+    </div>
+  `;
+}
+
+
+// PAYMENTS LIST
+function loadPayments() {
+  const list = document.getElementById("paymentsList");
+  if (!list) return;
+
+  list.innerHTML = `
+    <div class="card p-4">
+      <p class="font-semibold">Ajit - ₹50</p>
+      <p class="text-sm text-slate-400">Pending</p>
+    </div>
+  `;
+}
+
+
+// NOTIFICATIONS
+function loadNotifications() {
+  const list = document.getElementById("notificationsList");
+  if (!list) return;
+
+  list.innerHTML = `
+    <div class="card p-3">
+      <p class="text-sm">New payment received 💰</p>
+    </div>
+  `;
+}
+
+
+// PROFILE DATA
+function loadProfile() {
+  document.getElementById("profileName").innerText = "Ajit";
+  document.getElementById("profileEmail").innerText = "ajit@college.edu";
+}
+
+
+// ================= AUTO LOAD ON PAGE SWITCH =================
+function showPage(page) {
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const activeNav = document.getElementById('nav-' + page);
+  if (activeNav) activeNav.classList.add('active');
+
+  // LOAD DATA BASED ON PAGE
+  if (page === "home") loadHomeStats();
+  if (page === "dashboard") loadDashboard();
+  if (page === "payments") loadPayments();
+  if (page === "notifications") loadNotifications();
+  if (page === "profile") loadProfile();
+}
 
   </script>
 </div>
