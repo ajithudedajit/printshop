@@ -69,7 +69,7 @@ router.post('/submit-payment', requireAuth, upload.single('screenshot'), (req, r
     if (!poll) return res.status(404).json({ error: 'Poll not found' });
 
     const numCopies = parseInt(copies) || 1;
-    const amount = poll.pricePerCopy * numCopies;
+    const amount = poll.pricePerCopy * poll.totalPages * numCopies;
 
     // Fraud detection
     let status = 'pending';
