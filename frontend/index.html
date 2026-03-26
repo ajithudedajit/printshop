@@ -486,11 +486,9 @@ html:not(.dark) .toast { background: white; border-color: rgba(0,0,0,0.1); color
   <div class="modal-sheet" id="reviewModalContent">
     <!-- Filled dynamically -->
   </div>
+</div>
 
-  
-  <script type="module" src="/app.js"></script>
-
-  <script>
+<script>
 
 // ================= TOAST =================
 function showToast(msg) {
@@ -581,25 +579,6 @@ function updateNotificationBadge(count = 0) {
     badge.classList.add("hidden");
   }
 }
-    // ================= PAGE NAVIGATION FIX =================
-function showPage(page) {
-  // hide all pages
-  document.querySelectorAll('.page').forEach(p => {
-    p.classList.remove('active');
-  });
-
-  // show selected page
-  const target = document.getElementById('page-' + page);
-  if (target) target.classList.add('active');
-
-  // update bottom nav active state
-  document.querySelectorAll('.nav-item').forEach(n => {
-    n.classList.remove('active');
-  });
-
-  const activeNav = document.getElementById('nav-' + page);
-  if (activeNav) activeNav.classList.add('active');
-}
     // ================= EXTRA FUNCTIONS FIX =================
 
 // Duration buttons
@@ -620,11 +599,6 @@ function previewQR(input) {
     document.getElementById("qrPlaceholder").classList.add("hidden");
   };
   reader.readAsDataURL(file);
-}
-
-// Dashboard dummy
-function loadDashboard() {
-  showToast("Dashboard loaded 📊");
 }
 
 // Payments filter
@@ -744,13 +718,11 @@ function showPage(page) {
 
   // LOAD DATA BASED ON PAGE
   if (page === "home") loadHomeStats();
-  if (page === "dashboard") loadDashboard();
-  if (page === "payments") loadPayments();
-  if (page === "notifications") loadNotifications();
-  if (page === "profile") loadProfile();
+  else if (page === "dashboard") loadDashboard();
+  else if (page === "payments") loadPayments();
+  else if (page === "notifications") loadNotifications();
+  else if (page === "profile") loadProfile();
 }
-
-  </script>
-</div>
+</script>
 </body>
 </html>
