@@ -401,7 +401,7 @@ html:not(.dark) .toast { background: white; border-color: rgba(0,0,0,0.1); color
       <div class="text-center pt-4 pb-2">
         <div class="w-20 h-20 rounded-2xl mx-auto mb-3 flex items-center justify-center text-white text-3xl font-bold glow" style="background:linear-gradient(135deg,#6366f1,#a78bfa)" id="profileAvatar">U</div>
         <h2 class="text-xl font-bold" id="profileName">User</h2>
-        <p class="text-slate-400 text-sm" id="profileEmail">user@college.edu</p>
+        <p class="text-slate-400 text-sm" id="profileEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9de8eef8efddfef2f1f1f8faf8b3f8f9e8">[email&#160;protected]</a></p>
         <span class="inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold" style="background:rgba(99,102,241,0.2);color:#a5b4fc" id="profileRole">Student</span>
       </div>
 
@@ -488,7 +488,7 @@ html:not(.dark) .toast { background: white; border-color: rgba(0,0,0,0.1); color
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 // ================= TOAST =================
 function showToast(msg) {
@@ -602,8 +602,57 @@ function previewQR(input) {
 }
 
 // Payments filter
+const allPayments = [
+  { name: "Ajit", amount: 50, status: "pending" },
+  { name: "Riya", amount: 30, status: "verified" },
+  { name: "Karan", amount: 20, status: "suspicious" },
+  { name: "Meena", amount: 60, status: "fraud" },
+  { name: "Dev", amount: 45, status: "pending" },
+  { name: "Sneha", amount: 25, status: "verified" },
+];
+
 function filterPayments(type) {
-  showToast("Filter: " + type);
+  // Update active filter button
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const isActive = btn.dataset.filter === type;
+    if (isActive) {
+      btn.style.background = 'linear-gradient(135deg,#6366f1,#4f46e5)';
+      btn.style.color = 'white';
+      btn.classList.remove('btn-secondary');
+    } else {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.classList.add('btn-secondary');
+    }
+  });
+
+  const list = document.getElementById("paymentsList");
+  if (!list) return;
+
+  const filtered = type === 'all' ? allPayments : allPayments.filter(p => p.status === type);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="card p-6 text-center text-slate-400">No payments found</div>`;
+    return;
+  }
+
+  const statusLabel = { pending: '🕐 Pending', verified: '✅ Verified', suspicious: '⚠️ Suspicious', fraud: '🚫 Fraud' };
+  const statusClass = { pending: 'status-pending', verified: 'status-verified', suspicious: 'status-suspicious', fraud: 'status-fraud' };
+
+  list.innerHTML = filtered.map(p => `
+    <div class="card p-4 rounded-2xl flex items-center justify-between">
+      <div>
+        <p class="font-semibold">${p.name} - ₹${p.amount}</p>
+        <span class="badge ${statusClass[p.status]} mt-1">${statusLabel[p.status]}</span>
+      </div>
+      <div class="flex gap-2">
+        ${p.status === 'pending' || p.status === 'suspicious' ? `
+          <button class="btn-success text-xs px-3 py-1.5 rounded-lg" onclick="showToast('${p.name} verified ✅')">Verify</button>
+          <button class="btn-danger text-xs px-3 py-1.5 rounded-lg" onclick="showToast('${p.name} rejected 🚫')">Reject</button>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
 }
 
 // Modals close
@@ -672,15 +721,7 @@ function loadDashboard() {
 
 // PAYMENTS LIST
 function loadPayments() {
-  const list = document.getElementById("paymentsList");
-  if (!list) return;
-
-  list.innerHTML = `
-    <div class="card p-4">
-      <p class="font-semibold">Ajit - ₹50</p>
-      <p class="text-sm text-slate-400">Pending</p>
-    </div>
-  `;
+  filterPayments('all');
 }
 
 
@@ -718,11 +759,4 @@ function showPage(page) {
 
   // LOAD DATA BASED ON PAGE
   if (page === "home") loadHomeStats();
-  else if (page === "dashboard") loadDashboard();
-  else if (page === "payments") loadPayments();
-  else if (page === "notifications") loadNotifications();
-  else if (page === "profile") loadProfile();
-}
-</script>
-</body>
-</html>
+  
