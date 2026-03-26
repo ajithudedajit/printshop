@@ -1,0 +1,9 @@
+run = "npm install && node backend/server.js"
+language = "nodejs"
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+run = ["sh", "-c", "node backend/server.js"]
+deploymentTarget = "cloudrun"

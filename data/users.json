@@ -1,0 +1,31 @@
+[
+  {
+    "id": "6019c411-310a-41c6-9287-06c67541beca",
+    "name": "Demo Student",
+    "email": "demo@gmail.com",
+    "password": null,
+    "googleId": "google_1774407791772",
+    "role": "student",
+    "createdAt": "2026-03-25T03:03:11.847Z",
+    "badges": []
+  },
+  {
+    "id": "03dc50d5-48eb-4f2f-8f25-0d5e807ff117",
+    "name": "Ajit",
+    "email": "ajithuded78@gmail.com",
+    "password": "$2a$10$azJVmbzfPFwrASn.rfXAdOR1o07kLb/2BPqvn71XbAiqrI3wJ6aoa",
+    "role": "cr",
+    "createdAt": "2026-03-25T03:03:45.552Z",
+    "badges": []
+  },
+  {
+    "id": "5c7159c7-963b-473b-a73a-5eda34e667a6",
+    "name": "Abhinandan Awate",
+    "email": "awateabhinandan@gmail.com",
+    "password": null,
+    "googleId": "iHCMEuzAnITFXOKopghqyuEukdg1",
+    "role": "student",
+    "createdAt": "2026-03-26T07:33:26.807Z",
+    "badges": []
+  }
+]
