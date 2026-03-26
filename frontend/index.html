@@ -581,6 +581,25 @@ function updateNotificationBadge(count = 0) {
     badge.classList.add("hidden");
   }
 }
+    // ================= PAGE NAVIGATION FIX =================
+function showPage(page) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+  });
+
+  // show selected page
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  // update bottom nav active state
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+  });
+
+  const activeNav = document.getElementById('nav-' + page);
+  if (activeNav) activeNav.classList.add('active');
+}
 
   </script>
 </div>
