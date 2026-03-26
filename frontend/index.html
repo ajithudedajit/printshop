@@ -600,6 +600,64 @@ function showPage(page) {
   const activeNav = document.getElementById('nav-' + page);
   if (activeNav) activeNav.classList.add('active');
 }
+    // ================= EXTRA FUNCTIONS FIX =================
+
+// Duration buttons
+function setDuration(val) {
+  const input = document.getElementById("pollDuration");
+  if (input) input.value = val;
+}
+
+// QR preview
+function previewQR(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    document.getElementById("qrPreviewImg").src = e.target.result;
+    document.getElementById("qrPreview").classList.remove("hidden");
+    document.getElementById("qrPlaceholder").classList.add("hidden");
+  };
+  reader.readAsDataURL(file);
+}
+
+// Dashboard dummy
+function loadDashboard() {
+  showToast("Dashboard loaded 📊");
+}
+
+// Payments filter
+function filterPayments(type) {
+  showToast("Filter: " + type);
+}
+
+// Modals close
+function closePollModal(e) {
+  if (e.target.id === "pollModal") {
+    e.currentTarget.classList.remove("open");
+  }
+}
+
+function closePaymentModal(e) {
+  if (e.target.id === "paymentModal") {
+    e.currentTarget.classList.remove("open");
+  }
+}
+
+function closeReviewModal(e) {
+  if (e.target.id === "reviewModal") {
+    e.currentTarget.classList.remove("open");
+  }
+}
+
+// Logout
+function handleLogout() {
+  showToast("Logged out");
+
+  document.getElementById('appScreen').classList.add('hidden');
+  document.getElementById('authScreen').classList.remove('hidden');
+}
 
   </script>
 </div>
